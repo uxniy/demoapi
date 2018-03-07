@@ -1,0 +1,71 @@
+
+<!doctype html>
+<html>
+
+<head>
+    <title>Radar Chart</title>
+    <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+    <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <style>
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div style="width:40%">
+        <canvas id="canvas"></canvas>
+    </div>
+    
+    <script>
+    
+
+    var color = Chart.helpers.color;
+    var config = {
+        type: 'radar',
+        data: {
+            labels: ["kinds", "information", "payment", "staff", "packaging", "delivery"],
+            datasets: [{
+                label: "review",
+                backgroundColor: color(window.chartColors.yellow).alpha(0.2).rgbString(),
+                borderColor: window.chartColors.yellow,
+                pointBackgroundColor: window.chartColors.yellow,
+                data: null
+            },]
+        },
+        options: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Review'
+            },
+            scale: {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+        }
+    };
+
+    window.onload = function() {
+        url = "http://localhost:8000/review/";
+                $.getJSON(url, function(resp){
+                config.data.datasets[0].data=[resp.kind,resp.info,resp.payment,resp.staff,resp.packaging,resp.delivery];
+
+                window.myRadar = new Chart(document.getElementById("canvas"), config);    
+                });
+                
+        
+    };
+
+    </script>
+</body>
+
+</html>

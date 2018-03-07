@@ -1,0 +1,22 @@
+version: '3'
+
+networks:
+  mynet:
+    driver: bridge
+
+services:  
+  apiserver:
+    image: uxniy/demoapi
+    ports:
+      - "8000:8000"
+    networks:
+      - mynet
+
+  webserver:
+    build: ./nginx/
+    ports:
+      - "80:80"
+    depends_on:
+      - apiserver
+    networks:
+      - mynet
